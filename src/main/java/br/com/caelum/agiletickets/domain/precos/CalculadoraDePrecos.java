@@ -8,26 +8,13 @@ import br.com.caelum.agiletickets.models.TipoDeEspetaculo;
 public class CalculadoraDePrecos {
 
 	public BigDecimal calcula(Sessao sessao, Integer quantidade) {
-		BigDecimal precoOriginal = sessao.getPreco();
 		double porcentagemReservada = (sessao.getTotalIngressos() - sessao.getIngressosReservados()) / sessao.getTotalIngressos().doubleValue();
 
-		BigDecimal preco;
+		BigDecimal preco = calculaPrecoPorLugaresAcabando(porcentagemReservada, sessao);
 		
-		if(sessao.getEspetaculo().getTipo().equals(TipoDeEspetaculo.CINEMA) || sessao.getEspetaculo().getTipo().equals(TipoDeEspetaculo.SHOW)) {
-			preco = calculaPrecoPorLugaresAcabando(porcentagemReservada, sessao);
-		} else if(sessao.getEspetaculo().getTipo().equals(TipoDeEspetaculo.BALLET)) {
-			preco = calculaPrecoPorLugaresAcabando(porcentagemReservada, sessao);
+		if(sessao.getEspetaculo().getTipo().equals(TipoDeEspetaculo.BALLET) || sessao.getEspetaculo().getTipo().equals(TipoDeEspetaculo.ORQUESTRA)) {
 			preco = calculaPrecoPorDuracao(sessao, preco);
-			
-		} else if(sessao.getEspetaculo().getTipo().equals(TipoDeEspetaculo.ORQUESTRA)) {
-			preco = calculaPrecoPorLugaresAcabando(porcentagemReservada, sessao);
-
-			preco = calculaPrecoPorDuracao(sessao, preco);
-		}  else {
-			//nao aplica aumento para teatro (quem vai é pobretão)
-			preco = precoOriginal;
-		} 
-
+		}
 		return preco.multiply(BigDecimal.valueOf(quantidade));
 	}
 
