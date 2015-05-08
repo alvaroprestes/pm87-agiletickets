@@ -43,13 +43,11 @@ public class CalculadoraDePrecos {
 		TipoDeEspetaculo tipo = sessao.getEspetaculo().getTipo();
 		BigDecimal precoOriginal = sessao.getPreco();
 
-		BigDecimal preco;
 		if(porcentagemReservada <= tipo.getPercentualAumentoPorOcupacao()) { 
-			preco = precoOriginal.add(precoOriginal.multiply(BigDecimal.valueOf(tipo.getPercentualAumento())));
+			return precoOriginal.add(precoOriginal.multiply(BigDecimal.valueOf(tipo.getPercentualAumento())));
 		} else {
-			preco = precoOriginal;
+			return precoOriginal;
 		}
-		return preco;
 	}
 
 }
