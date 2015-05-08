@@ -14,29 +14,13 @@ public class CalculadoraDePrecos {
 		BigDecimal preco;
 		
 		if(sessao.getEspetaculo().getTipo().equals(TipoDeEspetaculo.CINEMA) || sessao.getEspetaculo().getTipo().equals(TipoDeEspetaculo.SHOW)) {
-			//quando estiver acabando os ingressos... 
-			double quantoAumenta = 0.10;
-			double porcentagemParaUltimasVagas = 0.05;
-
-			preco = calculaPrecoPorLugaresAcabando(precoOriginal,
-					porcentagemReservada, quantoAumenta,
-					porcentagemParaUltimasVagas);
+			preco = calculaPrecoPorLugaresAcabando(porcentagemReservada, sessao);
 		} else if(sessao.getEspetaculo().getTipo().equals(TipoDeEspetaculo.BALLET)) {
-			double quantoAumenta = 0.20;
-			double porcentagemParaUltimasVagas = 0.50;
-
-			preco = calculaPrecoPorLugaresAcabando(precoOriginal,
-					porcentagemReservada, quantoAumenta,
-					porcentagemParaUltimasVagas);
+			preco = calculaPrecoPorLugaresAcabando(porcentagemReservada, sessao);
 			preco = calculaPrecoPorDuracao(sessao, preco);
 			
 		} else if(sessao.getEspetaculo().getTipo().equals(TipoDeEspetaculo.ORQUESTRA)) {
-			double quantoAumenta = 0.20;
-			double porcentagemParaUltimasVagas = 0.50;
-			
-			preco = calculaPrecoPorLugaresAcabando(precoOriginal,
-					porcentagemReservada, quantoAumenta,
-					porcentagemParaUltimasVagas);
+			preco = calculaPrecoPorLugaresAcabando(porcentagemReservada, sessao);
 
 			preco = calculaPrecoPorDuracao(sessao, preco);
 		}  else {
@@ -55,12 +39,13 @@ public class CalculadoraDePrecos {
 		return precoAtual;
 	}
 
-	private BigDecimal calculaPrecoPorLugaresAcabando(BigDecimal precoOriginal,
-			double porcentagemReservada, double quantoAumenta,
-			double porcentagemParaUltimasVagas) {
+	private BigDecimal calculaPrecoPorLugaresAcabando(double porcentagemReservada, Sessao sessao) {
+		TipoDeEspetaculo tipo = sessao.getEspetaculo().getTipo();
+		BigDecimal precoOriginal = sessao.getPreco();
+
 		BigDecimal preco;
-		if(porcentagemReservada <= porcentagemParaUltimasVagas) { 
-			preco = precoOriginal.add(precoOriginal.multiply(BigDecimal.valueOf(quantoAumenta)));
+		if(porcentagemReservada <= tipo.getPercentualAumentoPorOcupacao()) { 
+			preco = precoOriginal.add(precoOriginal.multiply(BigDecimal.valueOf(tipo.getPercentualAumento())));
 		} else {
 			preco = precoOriginal;
 		}
