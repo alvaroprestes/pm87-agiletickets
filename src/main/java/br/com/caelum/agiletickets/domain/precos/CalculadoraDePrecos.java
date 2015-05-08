@@ -7,7 +7,7 @@ import br.com.caelum.agiletickets.models.TipoDeEspetaculo;
 
 public class CalculadoraDePrecos {
 
-	public static BigDecimal calcula(Sessao sessao, Integer quantidade) {
+	public BigDecimal calcula(Sessao sessao, Integer quantidade) {
 		BigDecimal precoOriginal = sessao.getPreco();
 		double porcentagemReservada = (sessao.getTotalIngressos() - sessao.getIngressosReservados()) / sessao.getTotalIngressos().doubleValue();
 
