@@ -1,5 +1,6 @@
 Agile Tickets
 =============
+Desenvolvedor Noob Stroncho
 
 Começando a desenvolver
 -----------------------
