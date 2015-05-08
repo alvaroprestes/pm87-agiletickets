@@ -18,43 +18,53 @@ public class CalculadoraDePrecos {
 			double quantoAumenta = 0.10;
 			double porcentagemParaUltimasVagas = 0.05;
 
-			if(porcentagemReservada <= porcentagemParaUltimasVagas) { 
-				preco = precoOriginal.add(precoOriginal.multiply(BigDecimal.valueOf(quantoAumenta)));
-			} else {
-				preco = precoOriginal;
-			}
+			preco = calculaPrecoPorLugaresAcabando(precoOriginal,
+					porcentagemReservada, quantoAumenta,
+					porcentagemParaUltimasVagas);
 		} else if(sessao.getEspetaculo().getTipo().equals(TipoDeEspetaculo.BALLET)) {
 			double quantoAumenta = 0.20;
 			double porcentagemParaUltimasVagas = 0.50;
 
-			if(porcentagemReservada <= porcentagemParaUltimasVagas) {
-				preco = precoOriginal.add(precoOriginal.multiply(BigDecimal.valueOf(quantoAumenta)));
-			} else {
-				preco = precoOriginal;
-			}
+			preco = calculaPrecoPorLugaresAcabando(precoOriginal,
+					porcentagemReservada, quantoAumenta,
+					porcentagemParaUltimasVagas);
+			preco = calculaPrecoPorDuracao(sessao, preco);
 			
-			if(sessao.getDuracaoEmMinutos() > 60){
-				preco = preco.add(precoOriginal.multiply(BigDecimal.valueOf(0.10)));
-			}
 		} else if(sessao.getEspetaculo().getTipo().equals(TipoDeEspetaculo.ORQUESTRA)) {
 			double quantoAumenta = 0.20;
 			double porcentagemParaUltimasVagas = 0.50;
 			
-			if(porcentagemReservada <= porcentagemParaUltimasVagas) { 
-				preco = precoOriginal.add(precoOriginal.multiply(BigDecimal.valueOf(quantoAumenta)));
-			} else {
-				preco = precoOriginal;
-			}
+			preco = calculaPrecoPorLugaresAcabando(precoOriginal,
+					porcentagemReservada, quantoAumenta,
+					porcentagemParaUltimasVagas);
 
-			if(sessao.getDuracaoEmMinutos() > 60){
-				preco = preco.add(precoOriginal.multiply(BigDecimal.valueOf(0.10)));
-			}
+			preco = calculaPrecoPorDuracao(sessao, preco);
 		}  else {
 			//nao aplica aumento para teatro (quem vai é pobretão)
 			preco = precoOriginal;
 		} 
 
 		return preco.multiply(BigDecimal.valueOf(quantidade));
+	}
+
+	private BigDecimal calculaPrecoPorDuracao(Sessao sessao, BigDecimal precoAtual) {
+		BigDecimal precoOriginal = sessao.getPreco();
+		if(sessao.getDuracaoEmMinutos() > 60){
+			precoAtual = precoAtual.add(precoOriginal.multiply(BigDecimal.valueOf(0.10)));
+		}
+		return precoAtual;
+	}
+
+	private BigDecimal calculaPrecoPorLugaresAcabando(BigDecimal precoOriginal,
+			double porcentagemReservada, double quantoAumenta,
+			double porcentagemParaUltimasVagas) {
+		BigDecimal preco;
+		if(porcentagemReservada <= porcentagemParaUltimasVagas) { 
+			preco = precoOriginal.add(precoOriginal.multiply(BigDecimal.valueOf(quantoAumenta)));
+		} else {
+			preco = precoOriginal;
+		}
+		return preco;
 	}
 
 }
