@@ -101,7 +101,7 @@ public class EspetaculoTest {
 	}
 
 	@Test
-	public void criaTresSessoesSeComecaHojeETerminaDepoisDeAmanha() throws Exception {
+	public void criaTresSessoesSeComecaHojeETerminaDepoisDeAmanhaEmPeriodicidadeDiaria() throws Exception {
 		Espetaculo espetaculo = new Espetaculo();
 		LocalDate inicio = new LocalDate(2015, 5, 11);
 		LocalDate fim = new LocalDate(2015, 5, 13);
@@ -117,5 +117,20 @@ public class EspetaculoTest {
 
 		assertEquals(fim.toDateTime(horario), sessoes.get(2).getInicio());
 		assertEquals(espetaculo, sessoes.get(2).getEspetaculo());
+	}
+
+	@Test
+	public void criaUmaSessaoSeComecaHojeETerminaAmanhaComPeriodicidadeSemanal() throws Exception {
+		Espetaculo espetaculo = new Espetaculo();
+		LocalDate inicio = new LocalDate(2015, 5, 11);
+		LocalDate fim = new LocalDate(2015, 5, 11);
+		LocalTime horario = new LocalTime(20, 0, 0);
+		List<Sessao> sessoes = espetaculo.criaSessoes(inicio, fim, horario, Periodicidade.SEMANAL);
+		
+		inicio = inicio.plusDays(1);
+		assertEquals(1, sessoes.size());
+		System.out.println(inicio.toDateTime(horario));
+		assertEquals(inicio.toDateTime(horario), sessoes.get(0).getInicio());
+		assertEquals(espetaculo, sessoes.get(0).getEspetaculo());
 	}
 }
