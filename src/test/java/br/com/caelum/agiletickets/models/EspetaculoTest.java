@@ -95,7 +95,27 @@ public class EspetaculoTest {
 		List<Sessao> sessoes = espetaculo.criaSessoes(inicio, fim, horario, Periodicidade.DIARIA);
 		
 		assertEquals(1, sessoes.size());
+		System.out.println(inicio.toDateTime(horario));
 		assertEquals(inicio.toDateTime(horario), sessoes.get(0).getInicio());
 		assertEquals(espetaculo, sessoes.get(0).getEspetaculo());
+	}
+
+	@Test
+	public void criaTresSessoesSeComecaHojeETerminaDepoisDeAmanha() throws Exception {
+		Espetaculo espetaculo = new Espetaculo();
+		LocalDate inicio = new LocalDate(2015, 5, 11);
+		LocalDate fim = new LocalDate(2015, 5, 13);
+		LocalTime horario = new LocalTime(20, 0, 0);
+		List<Sessao> sessoes = espetaculo.criaSessoes(inicio, fim, horario, Periodicidade.DIARIA);
+		
+		assertEquals(3, sessoes.size());
+		assertEquals(inicio.toDateTime(horario), sessoes.get(0).getInicio());
+		assertEquals(espetaculo, sessoes.get(0).getEspetaculo());
+
+		assertEquals(inicio.plusDays(1).toDateTime(horario), sessoes.get(1).getInicio());
+		assertEquals(espetaculo, sessoes.get(1).getEspetaculo());
+
+		assertEquals(fim.toDateTime(horario), sessoes.get(2).getInicio());
+		assertEquals(espetaculo, sessoes.get(2).getEspetaculo());
 	}
 }
