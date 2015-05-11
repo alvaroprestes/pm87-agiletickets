@@ -2,7 +2,6 @@ package br.com.caelum.agiletickets.models;
 
 import static com.google.common.collect.Lists.newArrayList;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -14,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
@@ -98,13 +98,15 @@ public class Espetaculo {
      * Repare que a data da primeira sessao é sempre a data inicial.
      */
 	public List<Sessao> criaSessoes(LocalDate inicio, LocalDate fim, LocalTime horario, Periodicidade periodicidade) {
-		List<Sessao> sessoes = new ArrayList<Sessao>();
+//		List<Sessao> sessoes = new ArrayList<Sessao>();
+		int numeroDeSessoes = Days.daysBetween(inicio, fim).getDays() + 1;
 		
-		Sessao sessao = new Sessao();
-		sessao.setEspetaculo(this);
-		sessao.setInicio(inicio.toDateTime(horario));
-		sessoes.add(sessao);
-		
+		for (int i = 0; i < numeroDeSessoes; i++) {
+			Sessao sessao = new Sessao();
+			sessao.setEspetaculo(this);
+			sessao.setInicio(inicio.plusDays(i).toDateTime(horario));
+			sessoes.add(sessao);
+		}
 		return sessoes;
 	}
 	
