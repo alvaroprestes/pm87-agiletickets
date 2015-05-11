@@ -96,5 +96,6 @@ public class EspetaculoTest {
 		
 		assertEquals(1, sessoes.size());
 		assertEquals(inicio.toDateTime(horario), sessoes.get(0).getInicio());
+		assertEquals(espetaculo, sessoes.get(0).getEspetaculo());
 	}
 }
